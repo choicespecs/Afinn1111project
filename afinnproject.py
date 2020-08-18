@@ -23,6 +23,9 @@ for m in finn_data['score']:
 ## Now, combine the lists together to create the dictionary
 finn_scores = dict(zip(names, scores))
 
+## This function is used to preprocess the text for comparison inbetween the user input & AFINN 111.
+## First, the text will eliminate any possible stopwords which might be irrelevant to the comparison
+## should remove punctuation from words. Finally, will result in a list of words from user input
 def preprocess_text(text):
 	stop_words = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"]
 	relevant_words = []
@@ -34,6 +37,11 @@ def preprocess_text(text):
 			relevant_words.append(words)
 	return relevant_words
 
+## This function will perform the anlysis comparing the list of words from the preprocess function to the AFINN 111 list.
+## This function will create a score and will assess whether the score is positive or negative
+## if the value of the score is 0 then it is possibly inferred that the analysis has been inconclusive
+## This can be from the lack of words that compare to scores within the AFINN 111 list, or this can be because 
+## the scores may cancel each other out.
 def sentiment_analysis(word_list):
 	score = 0
 	positive = "This sentence / word seems to be a positive one"
@@ -48,8 +56,9 @@ def sentiment_analysis(word_list):
 	else:
 		return "AFINN cannot assess input sentiment from its list"
 
-print("Input text for sentiment analysis: ")
-user_input = input()
-bag_of_words = preprocess_text(user_input)
-sentiment = sentiment_analysis(bag_of_words)
-print(sentiment)
+if __name__ == '__main__':
+	print("Input text for sentiment analysis: ")
+	user_input = input()
+	bag_of_words = preprocess_text(user_input)
+	sentiment = sentiment_analysis(bag_of_words)
+	print(sentiment)
